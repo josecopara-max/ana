@@ -2,66 +2,82 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Para ti</title>
+  <title>Para ti ✨</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(180deg, #0b0614, #1a0f2e);
+      background: radial-gradient(circle at top, #2a083d, #0b0612 70%);
+      color: #e6d9ff;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: "Georgia", serif;
-      color: #e6dff5;
     }
 
     .card {
       max-width: 700px;
-      padding: 50px 40px;
-      background: rgba(20, 10, 40, 0.65);
+      padding: 40px;
+      background: rgba(20, 10, 35, 0.75);
       border-radius: 20px;
-      box-shadow: 0 0 40px rgba(120, 70, 200, 0.25);
+      box-shadow: 0 0 30px rgba(140, 70, 255, 0.35);
+      animation: fadeIn 2s ease;
+    }
+
+    h1 {
       text-align: center;
+      color: #c79cff;
+      font-weight: 500;
+      margin-bottom: 30px;
     }
 
-    .top-text {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      opacity: 0.9;
-      margin-bottom: 35px;
+    p {
+      line-height: 1.7;
+      font-size: 1.05rem;
+      margin-bottom: 20px;
     }
 
-    .main-text {
-      font-size: 1.15rem;
-      line-height: 2;
-      margin-bottom: 40px;
-    }
-
-    .bottom-text {
-      font-size: 1rem;
-      line-height: 1.8;
-      opacity: 0.85;
-      margin-bottom: 60px;
-    }
-
-    .signature {
+    .firma {
+      margin-top: 35px;
       text-align: right;
-      font-size: 0.95rem;
-      color: #cbb7f0;
       font-style: italic;
+      color: #b894ff;
     }
 
-    @media (max-width: 600px) {
-      .card {
-        padding: 35px 25px;
-      }
+    .nota {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      text-align: center;
+      opacity: 0.6;
+    }
 
-      .top-text,
-      .main-text,
-      .bottom-text {
-        font-size: 1rem;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
       }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    button {
+      margin-top: 25px;
+      background: none;
+      border: 1px solid #9f6bff;
+      color: #e6d9ff;
+      padding: 10px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #9f6bff;
+      color: #12081d;
     }
   </style>
 </head>
@@ -69,37 +85,60 @@
 <body>
 
   <div class="card">
+    <h1>Feliz cumpleaños ✨</h1>
 
-    <div class="top-text">
-      Hoy es uno de esos días que deberían vivirse de cerca…<br>
-      y aunque no pueda estar a tu lado ahora,<br>
-      no quería que esta fecha pasara como si nada.
+    <p>
+      Hoy es uno de esos días que deberían vivirse de cerca…  
+      y aunque no pueda estar a tu lado ahora, no quería que esta fecha pasara como si nada.
+    </p>
+
+    <p>
+      *Hoy cumples un año más, y aunque no pueda estar a tu lado,
+       hay cosas que no conocen distancia.
+       Pensarte es una de ellas.
+       En medio de días distintos y caminos separados,
+       sigues estando presente de una forma tranquila y constante.
+
+       Ojalá este nuevo año te trate con la misma calma y luz
+       que, sin darte cuenta, trajiste a mi vida.*
+    </p>
+
+    <p>
+      La distancia no cambia lo importante, solo lo pone a prueba.
+      Y hoy, en tu cumpleaños, quería que supieras que estás presente,
+      incluso cuando no puedo estarlo físicamente.
+    </p>
+
+    <div class="firma">
+      — Con cariño
     </div>
 
-    <div class="main-text">
-      Hoy cumples un año más, y aunque no pueda estar a tu lado,<br>
-      hay cosas que no conocen distancia.<br><br>
-
-      Pensarte es una de ellas.<br><br>
-
-      En medio de días distintos y caminos separados,<br>
-      sigues estando presente de una forma tranquila y constante.<br><br>
-
-      Ojalá este nuevo año te trate con la misma calma y luz<br>
-      que, sin darte cuenta, trajiste a mi vida.
+    <div class="nota">
+      (Puedes poner música cuando quieras)
+      <br>
+      <button onclick="toggleMusic()">🎵 Reproducir / Pausar</button>
     </div>
-
-    <div class="bottom-text">
-      La distancia no cambia lo importante, solo lo pone a prueba.<br>
-      Y hoy, en tu cumpleaños, quería que supieras<br>
-      que estás presente, incluso cuando no puedo estarlo físicamente.
-    </div>
-
-    <div class="signature">
-      — Andrés 🖤
-    </div>
-
   </div>
+
+  <!-- Música instrumental -->
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9d8f8c3b2c.mp3?filename=deep-ambient-111447.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const music = document.getElementById("music");
+    let playing = false;
+
+    function toggleMusic() {
+      if (!playing) {
+        music.play();
+        playing = true;
+      } else {
+        music.pause();
+        playing = false;
+      }
+    }
+  </script>
 
 </body>
 </html>
