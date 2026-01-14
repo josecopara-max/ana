@@ -139,65 +139,76 @@
     <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9d8f8c3b2c.mp3?filename=deep-ambient-111447.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    // 🎉 CONFETI REVENTÓN (una sola vez)
-    const canvas = document.getElementById("confetti");
-    const ctx = canvas.getContext("2d");
+ <script>
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-    const confetti = [];
-    const colors = ["#c79cff", "#9f6bff", "#ffffff", "#b894ff"];
+  const particles = [];
+  const colors = ["#c79cff", "#9f6bff", "#ffffff", "#b894ff"];
+  const gravity = 0.05;
 
-    for (let i = 0; i < 150; i++) {
-      confetti.push({
-        x: canvas.width / 2,
-        y: canvas.height / 2,
-        r: Math.random() * 4 + 2,
-        dx: (Math.random() - 0.5) * 10,
-        dy: (Math.random() - 0.5) * 10,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        life: 100
-      });
-    }
+  function createParticle(side) {
+    return {
+      x: side === "left" ? -10 : canvas.width + 10,
+      y: Math.random() * canvas.height * 0.6,
+      size: Math.random() * 3 + 2,
+      speedX: side === "left"
+        ? Math.random() * 2 + 1
+        : -(Math.random() * 2 + 1),
+      speedY: Math.random() * -2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      life: 200
+    };
+  }
 
-    function drawConfetti() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Crear partículas iniciales
+  for (let i = 0; i < 120; i++) {
+    particles.push(createParticle(i % 2 === 0 ? "left" : "right"));
+  }
 
-      confetti.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
+  function animateConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        p.x += p.dx;
-        p.y += p.dy;
-        p.dy += 0.1;
-        p.life--;
-      });
+    particles.forEach(p => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.speedY += gravity;
+      p.life--;
 
-      if (confetti.some(p => p.life > 0)) {
-        requestAnimationFrame(drawConfetti);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
+
+    // Eliminar partículas muertas
+    for (let i = particles.length - 1; i >= 0; i--) {
+      if (particles[i].life <= 0) {
+        particles.splice(i, 1);
       }
     }
 
-    drawConfetti();
-
-    // 🎵 Música
-    const music = document.getElementById("music");
-    let playing = false;
-
-    function toggleMusic() {
-      if (!playing) {
-        music.play();
-        playing = true;
-      } else {
-        music.pause();
-        playing = false;
-      }
+    if (particles.length > 0) {
+      requestAnimationFrame(animateConfetti);
     }
-  </script>
+  }
 
-</body>
-</html>
+  animateConfetti();
+
+  // 🎵 Música (se mantiene igual)
+  const music = document.getElementById("music");
+  let playing = false;
+
+  function toggleMusic() {
+    if (!playing) {
+      music.play();
+      playing = true;
+    } else {
+      music.pause();
+      playing = false;
+    }
+  }
+</script>
