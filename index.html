@@ -15,15 +15,26 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .card {
+      position: relative;
       max-width: 700px;
       padding: 40px;
       background: rgba(20, 10, 35, 0.75);
       border-radius: 20px;
       box-shadow: 0 0 30px rgba(140, 70, 255, 0.35);
       animation: fadeIn 2s ease;
+      z-index: 2;
     }
 
     h1 {
@@ -53,17 +64,6 @@
       opacity: 0.6;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     button {
       margin-top: 25px;
       background: none;
@@ -79,40 +79,56 @@
       background: #9f6bff;
       color: #12081d;
     }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- 🎉 Confeti canvas -->
+  <canvas id="confetti"></canvas>
 
   <div class="card">
     <h1>Feliz cumpleaños ✨</h1>
 
     <p>
       Hoy es uno de esos días que deberían vivirse de cerca…  
-      y aunque no pueda estar a tu lado ahora, no quería que esta fecha pasara como si nada.
+      y aunque no pueda estar a tu lado ahora,  
+      no quería que esta fecha pasara como si nada.
     </p>
 
     <p>
-       Hay cosas que no conocen distancia.
-       Pensarte es una de ellas.
-       En medio de días distintos y caminos separados,
-       sigues estando presente de una forma tranquila y constante.
-       Ojalá este nuevo año te trate con la misma calma y luz
-       que, sin darte cuenta, trajiste a mi vida.
+      Hoy cumples un año más, y aunque no pueda estar a tu lado,  
+      hay cosas que no conocen distancia.  
+      Pensarte es una de ellas.  
+      En medio de días distintos y caminos separados,  
+      sigues estando presente de una forma tranquila y constante.  
+      Ojalá este nuevo año te trate con la misma calma y luz  
+      que, sin darte cuenta, trajiste a mi vida.
     </p>
 
     <p>
-      La distancia no cambia lo importante, solo lo pone a prueba.
-      Y hoy, en tu cumpleaños, quería que supieras que estás presente,
-      incluso cuando no puedo estarlo físicamente.
+      La distancia no cambia lo importante, solo lo pone a prueba.  
+      Y hoy, en tu cumpleaños, quería que supieras  
+      que estás presente, incluso cuando no puedo estarlo físicamente.
     </p>
 
     <div class="firma">
-      — Con cariño Andres 🖤
+      — Andrés 🖤
     </div>
 
     <div class="nota">
-      (Puedes poner música cuando quieras)
+      (La música puede cambiar cuando quieras)
       <br>
       <button onclick="toggleMusic()">🎵 Reproducir / Pausar</button>
     </div>
@@ -124,6 +140,51 @@
   </audio>
 
   <script>
+    // 🎉 CONFETI REVENTÓN (una sola vez)
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = [];
+    const colors = ["#c79cff", "#9f6bff", "#ffffff", "#b894ff"];
+
+    for (let i = 0; i < 150; i++) {
+      confetti.push({
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        r: Math.random() * 4 + 2,
+        dx: (Math.random() - 0.5) * 10,
+        dy: (Math.random() - 0.5) * 10,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: 100
+      });
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      confetti.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+        p.dy += 0.1;
+        p.life--;
+      });
+
+      if (confetti.some(p => p.life > 0)) {
+        requestAnimationFrame(drawConfetti);
+      }
+    }
+
+    drawConfetti();
+
+    // 🎵 Música
     const music = document.getElementById("music");
     let playing = false;
 
