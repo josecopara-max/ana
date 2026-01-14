@@ -139,33 +139,44 @@
     <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9d8f8c3b2c.mp3?filename=deep-ambient-111447.mp3" type="audio/mpeg">
   </audio>
 
- <script>
+<script>
   const canvas = document.getElementById("confetti");
   const ctx = canvas.getContext("2d");
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
 
   const particles = [];
   const colors = ["#c79cff", "#9f6bff", "#ffffff", "#b894ff"];
-  const gravity = 0.05;
+  const gravity = 0.06;
+  const TOTAL = 260; // 🔥 más confeti
 
   function createParticle(side) {
+    const margin = canvas.width * 0.15; // entra más al centro
     return {
-      x: side === "left" ? -10 : canvas.width + 10,
-      y: Math.random() * canvas.height * 0.6,
+      x: side === "left"
+        ? Math.random() * margin
+        : canvas.width - Math.random() * margin,
+      y: Math.random() * canvas.height * 0.7,
       size: Math.random() * 3 + 2,
       speedX: side === "left"
-        ? Math.random() * 2 + 1
-        : -(Math.random() * 2 + 1),
-      speedY: Math.random() * -2,
+        ? Math.random() * 2.5 + 1
+        : -(Math.random() * 2.5 + 1),
+      speedY: Math.random() * -2.5,
+      rotation: Math.random() * Math.PI,
+      rotationSpeed: (Math.random() - 0.5) * 0.1,
       color: colors[Math.floor(Math.random() * colors.length)],
-      life: 200
+      life: 260
     };
   }
 
-  // Crear partículas iniciales
-  for (let i = 0; i < 120; i++) {
+  // Crear muchas partículas
+  for (let i = 0; i < TOTAL; i++) {
     particles.push(createParticle(i % 2 === 0 ? "left" : "right"));
   }
 
@@ -176,15 +187,18 @@
       p.x += p.speedX;
       p.y += p.speedY;
       p.speedY += gravity;
+      p.rotation += p.rotationSpeed;
       p.life--;
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
       ctx.fillStyle = p.color;
-      ctx.fill();
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.8);
+      ctx.restore();
     });
 
-    // Eliminar partículas muertas
+    // eliminar cuando mueren
     for (let i = particles.length - 1; i >= 0; i--) {
       if (particles[i].life <= 0) {
         particles.splice(i, 1);
@@ -198,7 +212,7 @@
 
   animateConfetti();
 
-  // 🎵 Música (se mantiene igual)
+  // 🎵 Música
   const music = document.getElementById("music");
   let playing = false;
 
