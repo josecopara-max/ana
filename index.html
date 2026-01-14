@@ -151,66 +151,75 @@
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
 
-  const particles = [];
-  const colors = ["#c79cff", "#9f6bff", "#ffffff", "#b894ff"];
-  const gravity = 0.06;
-  const TOTAL = 260; // 🔥 más confeti
+  const petals = [];
+  const colors = ["#f3c6ff", "#e6b3ff", "#ffffff", "#d9a7ff"];
+  const gravity = 0.015;
+  const TOTAL = 220;
 
-  function createParticle(side) {
-    const margin = canvas.width * 0.15; // entra más al centro
+  function createPetal(side) {
+    const margin = canvas.width * 0.18;
     return {
       x: side === "left"
         ? Math.random() * margin
         : canvas.width - Math.random() * margin,
-      y: Math.random() * canvas.height * 0.7,
-      size: Math.random() * 3 + 2,
+      y: Math.random() * canvas.height * 0.6,
+      width: Math.random() * 6 + 4,
+      height: Math.random() * 10 + 6,
       speedX: side === "left"
-        ? Math.random() * 2.5 + 1
-        : -(Math.random() * 2.5 + 1),
-      speedY: Math.random() * -2.5,
+        ? Math.random() * 1.2 + 0.4
+        : -(Math.random() * 1.2 + 0.4),
+      speedY: Math.random() * 0.4 + 0.3,
+      swing: Math.random() * Math.PI * 2,
+      swingSpeed: Math.random() * 0.02 + 0.01,
       rotation: Math.random() * Math.PI,
-      rotationSpeed: (Math.random() - 0.5) * 0.1,
+      rotationSpeed: (Math.random() - 0.5) * 0.015,
       color: colors[Math.floor(Math.random() * colors.length)],
-      life: 260
+      life: 420
     };
   }
 
-  // Crear muchas partículas
   for (let i = 0; i < TOTAL; i++) {
-    particles.push(createParticle(i % 2 === 0 ? "left" : "right"));
+    petals.push(createPetal(i % 2 === 0 ? "left" : "right"));
   }
 
-  function animateConfetti() {
+  function drawPetal(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+    ctx.fillStyle = p.color;
+
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.width, p.height, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function animatePetals() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach(p => {
-      p.x += p.speedX;
-      p.y += p.speedY;
-      p.speedY += gravity;
+    petals.forEach(p => {
+      p.swing += p.swingSpeed;
+      p.x += Math.sin(p.swing) * 0.6 + p.speedX;
+      p.y += p.speedY + gravity;
       p.rotation += p.rotationSpeed;
       p.life--;
 
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rotation);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.8);
-      ctx.restore();
+      drawPetal(p);
     });
 
-    // eliminar cuando mueren
-    for (let i = particles.length - 1; i >= 0; i--) {
-      if (particles[i].life <= 0) {
-        particles.splice(i, 1);
+    for (let i = petals.length - 1; i >= 0; i--) {
+      if (petals[i].life <= 0 || petals[i].y > canvas.height + 20) {
+        petals.splice(i, 1);
       }
     }
 
-    if (particles.length > 0) {
-      requestAnimationFrame(animateConfetti);
+    if (petals.length > 0) {
+      requestAnimationFrame(animatePetals);
     }
   }
 
-  animateConfetti();
+  animatePetals();
 
   // 🎵 Música
   const music = document.getElementById("music");
