@@ -104,34 +104,30 @@
 
   </div>
 
-  <audio id="audio">
-    <source src="cancion.mp3" type="audio/mpeg">
-  </audio>
+<audio id="audio" controls style="display:none;">
+  <source src="cancion.mp3" type="audio/mpeg">
+</audio>
 
-  <script>
-    const startBtn = document.getElementById("startBtn");
-    const audio = document.getElementById("audio");
+ <script>
+  const startBtn = document.getElementById("startBtn");
+  const audio = document.getElementById("audio");
 
-    const sequence = [
-      "l1",
-      "l2",
-      "l3",
-      "l4",
-      "l5",
-      "l6"
-    ];
+  const sequence = ["l1","l2","l3","l4","l5","l6"];
 
-    startBtn.addEventListener("click", () => {
-      startBtn.style.display = "none";
-      audio.play().catch(() => {});
+  startBtn.addEventListener("click", () => {
+    startBtn.style.display = "none";
 
-      sequence.forEach((id, index) => {
-        setTimeout(() => {
-          document.getElementById(id).classList.add("show");
-        }, index * 4000);
-      });
+    audio.currentTime = 0;
+    audio.muted = false;
+    audio.play();
+
+    sequence.forEach((id, index) => {
+      setTimeout(() => {
+        document.getElementById(id).classList.add("show");
+      }, index * 4000);
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>
