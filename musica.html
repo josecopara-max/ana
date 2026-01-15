@@ -26,14 +26,18 @@
 
     .line {
       opacity: 0;
-      transition: opacity 1.8s ease;
       margin-bottom: 25px;
       font-size: 1.4rem;
       line-height: 1.6;
+      transition: opacity 2s ease;
     }
 
     .line.show {
       opacity: 1;
+    }
+
+    .line.fade {
+      opacity: 0;
     }
 
     .firma {
@@ -64,55 +68,60 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="line" id="l1">
-      Pero ahora que no estás aquí,<br>
-      que me di cuenta de lo que perdí.
-    </div>
-
-    <div class="line" id="l2">
-      Puede que no sea tan tarde pa' verte y decirte<br>
-      que sigo toda loca por tu amor.
-    </div>
-
-    <div class="line" id="l3">
-      Quiero decirte que lo siento,<br>
-      que te echo de menos.
-    </div>
-
-    <div class="line" id="l4">
-      Que de to' lo que ha pasa'o,<br>
-      nena, yo me arrepiento.
-    </div>
-
-    <div class="line" id="l5">
-      Te quiero todavía,<br>
-      no pienses que ya te di por perdida.
-    </div>
-
-    <button id="startBtn">🎶 Iniciar</button>
-
-    <div class="firma">
-      — con cariño, tu enamorado Andrés 🖤
-    </div>
-
+  <div class="line" id="l1">
+    Pero ahora que no estás aquí,<br>
+    que me di cuenta de lo que perdí.
   </div>
 
-<audio id="audio" controls style="display:none;">
+  <div class="line" id="l2">
+    Puede que no sea tan tarde pa' verte y decirte<br>
+    que sigo toda loca por tu amor.
+  </div>
+
+  <div class="line" id="l3">
+    Quiero decirte que lo siento,<br>
+    que te echo de menos.
+  </div>
+
+  <div class="line" id="l4">
+    Que de to' lo que ha pasa'o,<br>
+    nena, yo me arrepiento.
+  </div>
+
+  <div class="line" id="l5">
+    Te quiero todavía,<br>
+    no pienses que ya te di por perdida.
+  </div>
+
+  <button id="startBtn">🎶 Iniciar</button>
+
+  <div class="firma">
+    — con cariño, tu enamorado Andrés 🖤
+  </div>
+
+</div>
+
+<audio id="audio">
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
 
- <script>
+<script>
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
 
-  const timings = [
-    { id: "l1", time: 0 },
-    { id: "l2", time: 8 },
-    { id: "l3", time: 17 },
-    { id: "l4", time: 21 },
-    { id: "l5", time: 26 },
+  // tiempo de aparición y desaparición
+  const lyrics = [
+    { id: "l1", show: 0, hide: 7 },
+    { id: "l2", show: 8, hide: 16 },
+    { id: "l3", show: 17, hide: 20 },
+    { id: "l4", show: 21, hide: 25 },
+    { id: "l5", show: 26, hide: 33 },
+
+    // repetición (vuelven a aparecer limpias)
+    { id: "l3", show: 34, hide: 38 },
+    { id: "l5", show: 39, hide: 46 }
   ];
 
   startBtn.addEventListener("click", () => {
@@ -120,10 +129,20 @@
     audio.currentTime = 0;
     audio.play();
 
-    timings.forEach(line => {
+    lyrics.forEach(line => {
+      const el = document.getElementById(line.id);
+
+      // aparecer
       setTimeout(() => {
-        document.getElementById(line.id).classList.add("show");
-      }, line.time * 1000);
+        el.classList.remove("fade");
+        el.classList.add("show");
+      }, line.show * 1000);
+
+      // desvanecer
+      setTimeout(() => {
+        el.classList.remove("show");
+        el.classList.add("fade");
+      }, line.hide * 1000);
     });
   });
 </script>
