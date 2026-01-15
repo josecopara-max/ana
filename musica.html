@@ -36,15 +36,11 @@
       margin-bottom: 25px;
       font-size: 1.4rem;
       line-height: 1.6;
-      transition: opacity 2s ease;
+      transition: opacity 1s ease;
     }
 
     .line.show {
       opacity: 1;
-    }
-
-    .line.fade {
-      opacity: 0;
     }
 
     .firma {
@@ -167,7 +163,6 @@
     { id: "l3", show: 17, hide: 20 },
     { id: "l4", show: 21, hide: 25 },
     { id: "l5", show: 25, hide: 33 },
-    
     { id: "l3", show: 33, hide: 37 },
     { id: "l4", show: 37, hide: 41 },
     { id: "l5", show: 42, hide: 49 }
@@ -176,25 +171,21 @@
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
 
-    // 🔑 desbloqueo seguro del audio
-    audio.load();
-    audio.currentTime = 0;
-
     audio.play().catch(err => {
-      console.warn("Audio bloqueado, pero seguimos:", err);
+      console.warn("Audio bloqueado:", err);
     });
 
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
 
+      // Mostrar línea
       setTimeout(() => {
-        el.classList.remove("fade");
         el.classList.add("show");
       }, line.show * 1000);
 
+      // Ocultar línea
       setTimeout(() => {
         el.classList.remove("show");
-        el.classList.add("fade");
       }, line.hide * 1000);
     });
   });
