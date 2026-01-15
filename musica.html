@@ -118,22 +118,27 @@
 <body>
 
 <div class="container">
+
   <div class="line" id="l1">
     Pero ahora que no estás aquí,<br>
     que me di cuenta de lo que perdí.
   </div>
+
   <div class="line" id="l2">
     Puede que no sea tan tarde pa' verte y decirte<br>
     que sigo toda loca por tu amor.
   </div>
+
   <div class="line" id="l3">
     Quiero decirte que lo siento,<br>
     que te echo de menos.
   </div>
+
   <div class="line" id="l4">
     Que de to' lo que ha pasa'o,<br>
     nena, yo me arrepiento.
   </div>
+
   <div class="line" id="l5">
     Te quiero todavía,<br>
     no pienses que ya te di por perdida.
@@ -144,6 +149,7 @@
   <div class="firma">
     — con cariño, tu enamorado Andrés 🖤
   </div>
+
 </div>
 
 <div id="blackout"></div>
@@ -175,24 +181,27 @@ const lyrics = [
 
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
+
+  // Reproducir audio
   audio.currentTime = 0;
   audio.play();
 
+  // Mostrar letras
   lyrics.forEach(line => {
     const el = document.getElementById(line.id);
     setTimeout(() => el.classList.add("show"), line.show * 1000);
     setTimeout(() => el.classList.remove("show"), line.hide * 1000);
   });
-});
 
-// Al terminar la canción
-audio.addEventListener("ended", () => {
-  blackout.classList.add("show");
+  // Apagón y mensaje final usando tiempo total de animación
   setTimeout(() => {
-    document.body.classList.add("final");
-    blackout.classList.remove("show");
-    finalMessage.classList.add("show");
-  }, 3000); // 3 segundos de apagón
+    blackout.classList.add("show");
+    setTimeout(() => {
+      document.body.classList.add("final");
+      blackout.classList.remove("show");
+      finalMessage.classList.add("show");
+    }, 3000); // 3 segundos de apagón
+  }, 52000); // 52 segundos: tiempo total aproximado de la canción
 });
 </script>
 
