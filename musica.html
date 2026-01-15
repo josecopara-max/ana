@@ -45,19 +45,12 @@
       font-size: 1.4rem;
       line-height: 1.6;
       transform: translateY(16px);
-      transition:
-        opacity 2s ease,
-        transform 2s ease;
+      transition: opacity 2s ease, transform 2s ease;
     }
 
     .line.show {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .line.fade {
-      opacity: 0;
-      transform: translateY(-10px);
     }
 
     .firma {
@@ -85,7 +78,7 @@
       color: #12081d;
     }
 
-    /* Fondo negro al apagón */
+    /* Apagón */
     #blackout {
       position: fixed;
       inset: 0;
@@ -125,27 +118,22 @@
 <body>
 
 <div class="container">
-
   <div class="line" id="l1">
     Pero ahora que no estás aquí,<br>
     que me di cuenta de lo que perdí.
   </div>
-
   <div class="line" id="l2">
     Puede que no sea tan tarde pa' verte y decirte<br>
     que sigo toda loca por tu amor.
   </div>
-
   <div class="line" id="l3">
     Quiero decirte que lo siento,<br>
     que te echo de menos.
   </div>
-
   <div class="line" id="l4">
     Que de to' lo que ha pasa'o,<br>
     nena, yo me arrepiento.
   </div>
-
   <div class="line" id="l5">
     Te quiero todavía,<br>
     no pienses que ya te di por perdida.
@@ -156,10 +144,8 @@
   <div class="firma">
     — con cariño, tu enamorado Andrés 🖤
   </div>
-
 </div>
 
-<!-- Apagón y mensaje final -->
 <div id="blackout"></div>
 <div id="finalMessage">
   Feliz cumpleaños mi amor 💖<br>
@@ -171,54 +157,43 @@
 </audio>
 
 <script>
-  const startBtn = document.getElementById("startBtn");
-  const audio = document.getElementById("audio");
-  const blackout = document.getElementById("blackout");
-  const finalMessage = document.getElementById("finalMessage");
+const startBtn = document.getElementById("startBtn");
+const audio = document.getElementById("audio");
+const blackout = document.getElementById("blackout");
+const finalMessage = document.getElementById("finalMessage");
 
-  const lyrics = [
-    { id: "l1", show: 0, hide: 7 },
-    { id: "l2", show: 8, hide: 16 },
-    { id: "l3", show: 17, hide: 20 },
-    { id: "l4", show: 21, hide: 25 },
-    { id: "l5", show: 25, hide: 33 },
+const lyrics = [
+  { id: "l1", show: 0, hide: 7 },
+  { id: "l2", show: 8, hide: 16 },
+  { id: "l3", show: 17, hide: 20 },
+  { id: "l4", show: 21, hide: 25 },
+  { id: "l5", show: 25, hide: 33 },
+  { id: "l3", show: 33, hide: 37 },
+  { id: "l4", show: 37, hide: 41 },
+  { id: "l5", show: 42, hide: 49 }
+];
 
-    { id: "l3", show: 33, hide: 37 },
-    { id: "l4", show: 37, hide: 41 },
-    { id: "l5", show: 42, hide: 49 }
-  ];
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  audio.currentTime = 0;
+  audio.play();
 
-  startBtn.addEventListener("click", () => {
-    startBtn.style.display = "none";
-    audio.currentTime = 0;
-    audio.play();
-
-    // Mostrar letras
-    lyrics.forEach(line => {
-      const el = document.getElementById(line.id);
-
-      setTimeout(() => el.classList.remove("fade"), line.show * 1000);
-      setTimeout(() => el.classList.add("show"), line.show * 1000);
-
-      setTimeout(() => el.classList.remove("show"), line.hide * 1000);
-      setTimeout(() => el.classList.add("fade"), line.hide * 1000);
-    });
+  lyrics.forEach(line => {
+    const el = document.getElementById(line.id);
+    setTimeout(() => el.classList.add("show"), line.show * 1000);
+    setTimeout(() => el.classList.remove("show"), line.hide * 1000);
   });
+});
 
-  // Al terminar la canción
-  audio.addEventListener("ended", () => {
-    // Apagón
-    blackout.classList.add("show");
-
-    setTimeout(() => {
-      // Cambiar fondo
-      document.body.classList.add("final");
-      blackout.classList.remove("show");
-
-      // Mostrar mensaje final
-      finalMessage.classList.add("show");
-    }, 3000); // 3 segundos de apagón
-  });
+// Al terminar la canción
+audio.addEventListener("ended", () => {
+  blackout.classList.add("show");
+  setTimeout(() => {
+    document.body.classList.add("final");
+    blackout.classList.remove("show");
+    finalMessage.classList.add("show");
+  }, 3000); // 3 segundos de apagón
+});
 </script>
 
 </body>
