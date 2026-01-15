@@ -10,20 +10,20 @@
       margin: 0;
       min-height: 100vh;
       background: radial-gradient(circle at center, #2a083d, #0b0612 75%);
+      background-size: 200% 200%;
+      animation: backgroundMove 10s ease-in-out infinite;
       color: #e6d9ff;
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      animation: ambientPulse 7s ease-in-out infinite;
     }
 
-    /* pulso ambiental suave */
-    @keyframes ambientPulse {
-      0% { filter: brightness(1); }
-      50% { filter: brightness(1.08); }
-      100% { filter: brightness(1); }
+    @keyframes backgroundMove {
+      0%   { background-position: 50% 50%; }
+      50%  { background-position: 55% 45%; }
+      100% { background-position: 50% 50%; }
     }
 
     .container {
@@ -43,13 +43,11 @@
         transform 2s ease;
     }
 
-    /* aparece */
     .line.show {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* se desvanece */
     .line.fade {
       opacity: 0;
       transform: translateY(-10px);
@@ -127,7 +125,6 @@
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
 
-  // aparición y desaparición (incluye repeticiones)
   const lyrics = [
     { id: "l1", show: 0, hide: 7 },
     { id: "l2", show: 8, hide: 16 },
@@ -135,7 +132,6 @@
     { id: "l4", show: 21, hide: 25 },
     { id: "l5", show: 25, hide: 33 },
 
-    // repetición
     { id: "l3", show: 33, hide: 37 },
     { id: "l4", show: 37, hide: 41 },
     { id: "l5", show: 42, hide: 49 }
@@ -149,13 +145,11 @@
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
 
-      // aparecer
       setTimeout(() => {
         el.classList.remove("fade");
         el.classList.add("show");
       }, line.show * 1000);
 
-      // desvanecer
       setTimeout(() => {
         el.classList.remove("show");
         el.classList.add("fade");
@@ -166,3 +160,4 @@
 
 </body>
 </html>
+
