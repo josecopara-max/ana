@@ -85,33 +85,37 @@
       — con cariño, tu enamorado Andrés 🖤
     </div>
   </div>
-
+  
   <audio id="audio">
     <source src="cancion.mp3" type="audio/mpeg">
+  <button id="startBtn">Iniciar 🎶</button>  
   </audio>
 
-  <script>
-    const lines = [
-      { id: "l1", time: 3 },
-      { id: "l2", time: 12 },
-      { id: "l3", time: 22 },
-      { id: "l4", time: 32 },
-      { id: "l5", time: 42 },
-      { id: "l6", time: 55 }
-    ];
+ <script>
+   const audio = document.getElementById("audio");
+   const startBtn = document.getElementById("startBtn");
 
-    const audio = document.getElementById("audio");
+   const lines = [
+    { id: "l1", time: 3 },
+    { id: "l2", time: 12 },
+    { id: "l3", time: 22 },
+    { id: "l4", time: 32 },
+    { id: "l5", time: 42 },
+    { id: "l6", time: 55 }
+  ];
 
-    audio.addEventListener("timeupdate", () => {
-      const currentTime = audio.currentTime;
+  startBtn.addEventListener("click", () => {
+    startBtn.style.display = "none";
+    audio.play();
+  });
 
-      lines.forEach(line => {
-        if (currentTime >= line.time) {
-          document.getElementById(line.id).classList.add("show");
-        }
-      });
+  audio.addEventListener("timeupdate", () => {
+    const currentTime = audio.currentTime;
+
+    lines.forEach(line => {
+      if (currentTime >= line.time) {
+        document.getElementById(line.id).classList.add("show");
+      }
     });
-  </script>
-
-</body>
-</html>
+  });
+</script>
