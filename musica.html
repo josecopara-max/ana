@@ -1,204 +1,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Para ti 🎶</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at center, #2a083d, #0b0612 75%);
-      color: #e6d9ff;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      transition: background 2s ease;
-    }
-
-    body.final {
-      background: radial-gradient(circle at center, #ff5fa2, #1a0010 75%);
-    }
-
-    .container {
-      text-align: center;
-      max-width: 700px;
-      padding: 40px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .line {
-      opacity: 0;
-      margin-bottom: 25px;
-      font-size: 1.4rem;
-      line-height: 1.6;
-      transition: opacity 1s ease;
-    }
-
-    .line.show {
-      opacity: 1;
-    }
-
-    .firma {
-      margin-top: 40px;
-      font-size: 1rem;
-      color: #b894ff;
-      font-style: italic;
-      opacity: 0.8;
-    }
-
-    #startBtn {
-      margin-top: 30px;
-      padding: 12px 22px;
-      border-radius: 30px;
-      border: 1px solid #9f6bff;
-      background: none;
-      color: #e6d9ff;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    #startBtn:hover {
-      background: #9f6bff;
-      color: #12081d;
-    }
-
-    #blackout {
-      position: fixed;
-      inset: 0;
-      background: black;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 2s ease;
-      z-index: 5;
-    }
-
-    #blackout.show {
-      opacity: 1;
-    }
-
-    #finalMessage {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.5rem;
-      text-align: center;
-      opacity: 0;
-      color: #ffd6f2;
-      transition: opacity 2s ease;
-      z-index: 6;
-      padding: 20px;
-    }
-
-    #finalMessage.show {
-      opacity: 1;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Prueba Click</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #2a083d;
+    color: #fff;
+    font-family: sans-serif;
+    transition: background 0.5s;
+  }
+  #startBtn {
+    padding: 12px 22px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  #testMessage {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  #testMessage.show {
+    opacity: 1;
+  }
+</style>
 </head>
-
 <body>
 
-<div class="container">
-
-  <div class="line" id="l1">
-    Pero ahora que no estás aquí,<br>
-    que me di cuenta de lo que perdí.
-  </div>
-
-  <div class="line" id="l2">
-    Puede que no sea tan tarde pa' verte y decirte<br>
-    que sigo toda loca por tu amor.
-  </div>
-
-  <div class="line" id="l3">
-    Quiero decirte que lo siento,<br>
-    que te echo de menos.
-  </div>
-
-  <div class="line" id="l4">
-    Que de to' lo que ha pasa'o,<br>
-    nena, yo me arrepiento.
-  </div>
-
-  <div class="line" id="l5">
-    Te quiero todavía,<br>
-    no pienses que ya te di por perdida.
-  </div>
-
-  <button id="startBtn">🎶 Iniciar</button>
-
-  <div class="firma">
-    — con cariño, tu enamorado Andrés 🖤
-  </div>
-
-</div>
-
-<div id="blackout"></div>
-<div id="finalMessage">
-  Feliz cumpleaños mi amor 💖<br>
-  Te amo 🎂✨
-</div>
-
-<audio id="audio" preload="auto">
-  <source src="cancion.mp3" type="audio/mpeg">
-</audio>
+<button id="startBtn">🎶 Iniciar</button>
+<div id="testMessage">¡Click detectado! ✅</div>
 
 <script>
   const startBtn = document.getElementById("startBtn");
-  const audio = document.getElementById("audio");
-  const blackout = document.getElementById("blackout");
-  const finalMessage = document.getElementById("finalMessage");
+  const testMessage = document.getElementById("testMessage");
 
-  const lyrics = [
-    { id: "l1", show: 0, hide: 7 },
-    { id: "l2", show: 8, hide: 16 },
-    { id: "l3", show: 17, hide: 20 },
-    { id: "l4", show: 21, hide: 25 },
-    { id: "l5", show: 25, hide: 33 },
-    { id: "l3", show: 33, hide: 37 },
-    { id: "l4", show: 37, hide: 41 },
-    { id: "l5", show: 42, hide: 49 }
-  ];
-
-  startBtn.addEventListener("click", async () => {
-    startBtn.disabled = true;
-    startBtn.textContent = "Cargando...";
-
-    try {
-      await audio.play(); // desbloquea el audio
-      startBtn.style.display = "none";
-
-      lyrics.forEach(line => {
-        const el = document.getElementById(line.id);
-
-        // Mostrar
-        setTimeout(() => requestAnimationFrame(() => el.classList.add("show")), line.show * 1000);
-
-        // Ocultar
-        setTimeout(() => requestAnimationFrame(() => el.classList.remove("show")), line.hide * 1000);
-      });
-
-    } catch(err) {
-      console.warn("No se pudo reproducir el audio:", err);
-      startBtn.textContent = "🎶 Iniciar";
-      startBtn.disabled = false;
-    }
-  });
-
-  audio.addEventListener("ended", () => {
-    blackout.classList.add("show");
-
-    setTimeout(() => {
-      document.body.classList.add("final");
-      blackout.classList.remove("show");
-      finalMessage.classList.add("show");
-    }, 3000);
+  startBtn.addEventListener("click", () => {
+    document.body.style.background = "#ff5fa2"; // cambia el fondo
+    testMessage.classList.add("show");          // muestra mensaje
+    startBtn.style.display = "none";           // oculta botón
   });
 </script>
 
