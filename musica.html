@@ -18,6 +18,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      transition: background 2s ease;
     }
 
     @keyframes backgroundMove {
@@ -26,10 +27,16 @@
       100% { background-position: 50% 50%; }
     }
 
+    body.final {
+      background: radial-gradient(circle at center, #ff5fa2, #1a0010 75%);
+    }
+
     .container {
       text-align: center;
       max-width: 700px;
       padding: 40px;
+      position: relative;
+      z-index: 2;
     }
 
     .line {
@@ -77,6 +84,41 @@
       background: #9f6bff;
       color: #12081d;
     }
+
+    /* Fondo negro al apagón */
+    #blackout {
+      position: fixed;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 2s ease;
+      z-index: 5;
+    }
+
+    #blackout.show {
+      opacity: 1;
+    }
+
+    /* Mensaje final */
+    #finalMessage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      text-align: center;
+      opacity: 0;
+      color: #ffd6f2;
+      transition: opacity 2s ease;
+      z-index: 6;
+      padding: 20px;
+    }
+
+    #finalMessage.show {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -117,6 +159,13 @@
 
 </div>
 
+<!-- Apagón y mensaje final -->
+<div id="blackout"></div>
+<div id="finalMessage">
+  Feliz cumpleaños mi amor 💖<br>
+  Te amo 🎂✨
+</div>
+
 <audio id="audio">
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
@@ -124,6 +173,8 @@
 <script>
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
+  const blackout = document.getElementById("blackout");
+  const finalMessage = document.getElementById("finalMessage");
 
   const lyrics = [
     { id: "l1", show: 0, hide: 7 },
@@ -142,19 +193,31 @@
     audio.currentTime = 0;
     audio.play();
 
+    // Mostrar letras
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
 
-      setTimeout(() => {
-        el.classList.remove("fade");
-        el.classList.add("show");
-      }, line.show * 1000);
+      setTimeout(() => el.classList.remove("fade"), line.show * 1000);
+      setTimeout(() => el.classList.add("show"), line.show * 1000);
 
-      setTimeout(() => {
-        el.classList.remove("show");
-        el.classList.add("fade");
-      }, line.hide * 1000);
+      setTimeout(() => el.classList.remove("show"), line.hide * 1000);
+      setTimeout(() => el.classList.add("fade"), line.hide * 1000);
     });
+  });
+
+  // Al terminar la canción
+  audio.addEventListener("ended", () => {
+    // Apagón
+    blackout.classList.add("show");
+
+    setTimeout(() => {
+      // Cambiar fondo
+      document.body.classList.add("final");
+      blackout.classList.remove("show");
+
+      // Mostrar mensaje final
+      finalMessage.classList.add("show");
+    }, 3000); // 3 segundos de apagón
   });
 </script>
 
