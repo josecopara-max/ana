@@ -112,19 +112,24 @@
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
 
-  const sequence = ["l1","l2","l3","l4","l5","l6"];
+  const timings = [
+    { id: "l1", time: 0 },
+    { id: "l2", time: 6 },
+    { id: "l3", time: 12 },
+    { id: "l4", time: 18 },
+    { id: "l5", time: 24 },
+    { id: "l6", time: 30 }
+  ];
 
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
-
     audio.currentTime = 0;
-    audio.muted = false;
     audio.play();
 
-    sequence.forEach((id, index) => {
+    timings.forEach(line => {
       setTimeout(() => {
-        document.getElementById(id).classList.add("show");
-      }, index * 4000);
+        document.getElementById(line.id).classList.add("show");
+      }, line.time * 1000);
     });
   });
 </script>
