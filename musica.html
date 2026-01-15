@@ -18,11 +18,17 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      transition: background 2s ease;
+    }
+
+    body.new-bg {
+      background: radial-gradient(circle at center, #3b0f52, #12081d 75%);
+      animation: none;
     }
 
     @keyframes backgroundMove {
-      0%   { background-position: 50% 50%; }
-      50%  { background-position: 55% 45%; }
+      0% { background-position: 50% 50%; }
+      50% { background-position: 55% 45%; }
       100% { background-position: 50% 50%; }
     }
 
@@ -30,6 +36,7 @@
       text-align: center;
       max-width: 700px;
       padding: 40px;
+      z-index: 2;
     }
 
     .line {
@@ -38,9 +45,7 @@
       font-size: 1.4rem;
       line-height: 1.6;
       transform: translateY(16px);
-      transition:
-        opacity 2s ease,
-        transform 2s ease;
+      transition: opacity 2s ease, transform 2s ease;
     }
 
     .line.show {
@@ -70,19 +75,46 @@
       color: #e6d9ff;
       cursor: pointer;
       font-size: 1rem;
-      transition: all 0.3s ease;
     }
 
-    #startBtn:hover {
-      background: #9f6bff;
-      color: #12081d;
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 3s ease;
+      z-index: 5;
+    }
+
+    #overlay.show {
+      opacity: 1;
+    }
+
+    #finalMessage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: #f1e6ff;
+      opacity: 0;
+      transition: opacity 3s ease;
+      z-index: 6;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #finalMessage.show {
+      opacity: 1;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="content">
 
   <div class="line" id="l1">
     Pero ahora que no estás aquí,<br>
@@ -117,6 +149,9 @@
 
 </div>
 
+<div id="overlay"></div>
+<div id="finalMessage">Feliz cumpleaños, mi amor.<br>Te amo 🎂🖤</div>
+
 <audio id="audio">
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
@@ -124,6 +159,9 @@
 <script>
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
+  const overlay = document.getElementById("overlay");
+  const finalMessage = document.getElementById("finalMessage");
+  const content = document.getElementById("content");
 
   const lyrics = [
     { id: "l1", show: 0, hide: 7 },
@@ -156,8 +194,18 @@
       }, line.hide * 1000);
     });
   });
+
+  audio.addEventListener("ended", () => {
+    overlay.classList.add("show");
+
+    setTimeout(() => {
+      content.style.display = "none";
+      document.body.classList.add("new-bg");
+      overlay.classList.remove("show");
+      finalMessage.classList.add("show");
+    }, 4000);
+  });
 </script>
 
 </body>
 </html>
-
