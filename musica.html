@@ -16,6 +16,14 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      animation: ambientPulse 7s ease-in-out infinite;
+    }
+
+    /* pulso ambiental suave */
+    @keyframes ambientPulse {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.08); }
+      100% { filter: brightness(1); }
     }
 
     .container {
@@ -29,15 +37,22 @@
       margin-bottom: 25px;
       font-size: 1.4rem;
       line-height: 1.6;
-      transition: opacity 2s ease;
+      transform: translateY(16px);
+      transition:
+        opacity 2s ease,
+        transform 2s ease;
     }
 
+    /* aparece */
     .line.show {
       opacity: 1;
+      transform: translateY(0);
     }
 
+    /* se desvanece */
     .line.fade {
       opacity: 0;
+      transform: translateY(-10px);
     }
 
     .firma {
@@ -57,6 +72,7 @@
       color: #e6d9ff;
       cursor: pointer;
       font-size: 1rem;
+      transition: all 0.3s ease;
     }
 
     #startBtn:hover {
@@ -111,7 +127,7 @@
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
 
-  // tiempo de aparición y desaparición
+  // aparición y desaparición (incluye repeticiones)
   const lyrics = [
     { id: "l1", show: 0, hide: 7 },
     { id: "l2", show: 8, hide: 16 },
@@ -119,7 +135,7 @@
     { id: "l4", show: 21, hide: 25 },
     { id: "l5", show: 25, hide: 33 },
 
-    // repetición (vuelven a aparecer limpias)
+    // repetición
     { id: "l3", show: 33, hide: 37 },
     { id: "l4", show: 37, hide: 41 },
     { id: "l5", show: 42, hide: 49 }
