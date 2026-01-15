@@ -26,7 +26,7 @@
 
     .line {
       opacity: 0;
-      transition: opacity 1.5s ease;
+      transition: opacity 1.8s ease;
       margin-bottom: 25px;
       font-size: 1.4rem;
       line-height: 1.6;
@@ -109,30 +109,26 @@
   </audio>
 
   <script>
-    const audio = document.getElementById("audio");
     const startBtn = document.getElementById("startBtn");
+    const audio = document.getElementById("audio");
 
-    const lines = [
-      { id: "l1", time: 0.5 },
-      { id: "l2", time: 4 },
-      { id: "l3", time: 8 },
-      { id: "l4", time: 12 },
-      { id: "l5", time: 16 },
-      { id: "l6", time: 20 }
+    const sequence = [
+      "l1",
+      "l2",
+      "l3",
+      "l4",
+      "l5",
+      "l6"
     ];
 
     startBtn.addEventListener("click", () => {
       startBtn.style.display = "none";
-      audio.play();
-    });
+      audio.play().catch(() => {});
 
-    audio.addEventListener("timeupdate", () => {
-      const currentTime = audio.currentTime;
-
-      lines.forEach(line => {
-        if (currentTime >= line.time) {
-          document.getElementById(line.id).classList.add("show");
-        }
+      sequence.forEach((id, index) => {
+        setTimeout(() => {
+          document.getElementById(id).classList.add("show");
+        }, index * 4000);
       });
     });
   </script>
