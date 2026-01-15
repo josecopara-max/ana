@@ -16,6 +16,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      flex-direction: column;
     }
 
     .lyrics {
@@ -24,8 +25,8 @@
       padding: 40px;
       font-size: 1.4rem;
       line-height: 1.6;
-      opacity: 0;
-      animation: fadeIn 2s forwards;
+      opacity: 1; /* 👈 importante */
+      animation: fadeIn 2s ease;
     }
 
     .line {
@@ -45,10 +46,40 @@
       font-style: italic;
       opacity: 0.7;
     }
+
+    #startBtn {
+      background: none;
+      border: 1px solid #9f6bff;
+      color: #e6d9ff;
+      padding: 12px 26px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin-bottom: 25px;
+    }
+
+    #startBtn:hover {
+      background: #9f6bff;
+      color: #12081d;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <button id="startBtn">Iniciar 🎶</button>
 
   <div class="lyrics">
     <div class="line" id="l1">
@@ -85,37 +116,39 @@
       — con cariño, tu enamorado Andrés 🖤
     </div>
   </div>
-  
+
   <audio id="audio">
     <source src="cancion.mp3" type="audio/mpeg">
-  <button id="startBtn">Iniciar 🎶</button>  
   </audio>
 
- <script>
-   const audio = document.getElementById("audio");
-   const startBtn = document.getElementById("startBtn");
+  <script>
+    const audio = document.getElementById("audio");
+    const startBtn = document.getElementById("startBtn");
 
-   const lines = [
-    { id: "l1", time: 3 },
-    { id: "l2", time: 12 },
-    { id: "l3", time: 22 },
-    { id: "l4", time: 32 },
-    { id: "l5", time: 42 },
-    { id: "l6", time: 55 }
-  ];
+    const lines = [
+      { id: "l1", time: 3 },
+      { id: "l2", time: 12 },
+      { id: "l3", time: 22 },
+      { id: "l4", time: 32 },
+      { id: "l5", time: 42 },
+      { id: "l6", time: 55 }
+    ];
 
-  startBtn.addEventListener("click", () => {
-    startBtn.style.display = "none";
-    audio.play();
-  });
-
-  audio.addEventListener("timeupdate", () => {
-    const currentTime = audio.currentTime;
-
-    lines.forEach(line => {
-      if (currentTime >= line.time) {
-        document.getElementById(line.id).classList.add("show");
-      }
+    startBtn.addEventListener("click", () => {
+      startBtn.style.display = "none";
+      audio.play();
     });
-  });
-</script>
+
+    audio.addEventListener("timeupdate", () => {
+      const currentTime = audio.currentTime;
+
+      lines.forEach(line => {
+        if (currentTime >= line.time) {
+          document.getElementById(line.id).classList.add("show");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
