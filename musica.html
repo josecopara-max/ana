@@ -167,7 +167,7 @@
     { id: "l3", show: 17, hide: 20 },
     { id: "l4", show: 21, hide: 25 },
     { id: "l5", show: 25, hide: 33 },
-
+    
     { id: "l3", show: 33, hide: 37 },
     { id: "l4", show: 37, hide: 41 },
     { id: "l5", show: 42, hide: 49 }
@@ -175,8 +175,14 @@
 
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
+
+    // 🔑 desbloqueo seguro del audio
+    audio.load();
     audio.currentTime = 0;
-    audio.play();
+
+    audio.play().catch(err => {
+      console.warn("Audio bloqueado, pero seguimos:", err);
+    });
 
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
@@ -193,7 +199,6 @@
     });
   });
 
-  // CUANDO TERMINA LA CANCIÓN
   audio.addEventListener("ended", () => {
     blackout.classList.add("show");
 
