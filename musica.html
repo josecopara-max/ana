@@ -42,15 +42,8 @@
       transition: opacity 2s ease, transform 2s ease;
     }
 
-    .line.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .line.fade {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
+    .line.show { opacity: 1; transform: translateY(0); }
+    .line.fade { opacity: 0; transform: translateY(-10px); }
 
     .firma {
       margin-top: 40px;
@@ -88,9 +81,7 @@
       z-index: 5;
     }
 
-    #fadeOverlay.show {
-      opacity: 1;
-    }
+    #fadeOverlay.show { opacity: 1; }
 
     /* Mensaje final */
     #finalMessage {
@@ -107,8 +98,22 @@
       pointer-events: none;
     }
 
-    #finalMessage.show {
-      opacity: 1;
+    #finalMessage.show { opacity: 1; }
+
+    /* ===== PARTÍCULAS LATERALES ===== */
+    .particle {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(200, 160, 255, 0.8);
+      opacity: 0;
+      animation: floatParticle linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes floatParticle {
+      0%   { transform: translateY(30px); opacity: 0; }
+      20%  { opacity: 0.8; }
+      100% { transform: translateY(-120vh); opacity: 0; }
     }
 
     /* ===== CONFETI ===== */
@@ -117,7 +122,6 @@
       width: 10px;
       height: 10px;
       top: -10px;
-      opacity: 0.9;
       animation: fall linear forwards;
       z-index: 7;
     }
@@ -162,38 +166,15 @@
 <body>
 
 <div class="container">
-
-  <div class="line" id="l1">
-    Pero ahora que no estás aquí,<br>
-    que me di cuenta de lo que perdí.
-  </div>
-
-  <div class="line" id="l2">
-    Puede que no sea tan tarde pa' verte y decirte<br>
-    que sigo toda loca por tu amor.
-  </div>
-
-  <div class="line" id="l3">
-    Quiero decirte que lo siento,<br>
-    que te echo de menos.
-  </div>
-
-  <div class="line" id="l4">
-    Que de to' lo que ha pasa'o,<br>
-    nena, yo me arrepiento.
-  </div>
-
-  <div class="line" id="l5">
-    Te quiero todavía,<br>
-    no pienses que ya te di por perdida.
-  </div>
+  <div class="line" id="l1">Pero ahora que no estás aquí,<br>que me di cuenta de lo que perdí.</div>
+  <div class="line" id="l2">Puede que no sea tan tarde pa' verte y decirte<br>que sigo toda loca por tu amor.</div>
+  <div class="line" id="l3">Quiero decirte que lo siento,<br>que te echo de menos.</div>
+  <div class="line" id="l4">Que de to' lo que ha pasa'o,<br>nena, yo me arrepiento.</div>
+  <div class="line" id="l5">Te quiero todavía,<br>no pienses que ya te di por perdida.</div>
 
   <button id="startBtn">🎶 Iniciar</button>
 
-  <div class="firma">
-    — con cariño, tu enamorado Andrés 🖤
-  </div>
-
+  <div class="firma">— con cariño, tu enamorado Andrés 🖤</div>
 </div>
 
 <div id="fadeOverlay"></div>
@@ -224,10 +205,65 @@
     { id: "l5", show: 42, hide: 49 }
   ];
 
+  let particleInterval;
+
+  function startParticles() {
+    particleInterval = setInterval(() => {
+      const p = document.createElement("div");
+      p.classList.add("particle");
+
+      const side = Math.random() < 0.5;
+      p.style.left = side
+        ? 12 + Math.random() * 10 + "vw"
+        : 78 + Math.random() * 10 + "vw";
+
+      p.style.bottom = "-10px";
+      p.style.width = p.style.height = 4 + Math.random() * 4 + "px";
+      p.style.animationDuration = 6 + Math.random() * 4 + "s";
+
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 10000);
+    }, 350);
+  }
+
+  function stopParticles() {
+    clearInterval(particleInterval);
+  }
+
+  function launchConfetti() {
+    for (let i = 0; i < 120; i++) {
+      const c = document.createElement("div");
+      c.classList.add("confetti");
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
+      c.style.animationDuration = 2 + Math.random() * 3 + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+  }
+
+  function launchBalloons() {
+    const positions = [15, 25, 75, 85];
+    const colors = ["#ff5fa2", "#ffd166", "#6ae3ff", "#b388ff"];
+
+    positions.forEach(pos => {
+      for (let i = 0; i < 3; i++) {
+        const b = document.createElement("div");
+        b.classList.add("balloon");
+        b.style.left = pos + Math.random() * 4 + "vw";
+        b.style.background = colors[Math.floor(Math.random() * colors.length)];
+        b.style.animationDuration = 6 + Math.random() * 3 + "s";
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 9000);
+      }
+    });
+  }
+
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
     audio.currentTime = 0;
     audio.play();
+    startParticles();
 
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
@@ -244,48 +280,15 @@
     });
   });
 
-  function launchConfetti() {
-    for (let i = 0; i < 120; i++) {
-      const confetti = document.createElement("div");
-      confetti.classList.add("confetti");
-      confetti.style.left = Math.random() * 100 + "vw";
-      confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-      confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
-      document.body.appendChild(confetti);
-      setTimeout(() => confetti.remove(), 5000);
-    }
-  }
-
-  function launchBalloons() {
-    const positions = [18, 28, 72, 82];
-    const colors = ["#ff5fa2", "#ffd166", "#6ae3ff", "#b388ff"];
-
-    positions.forEach(pos => {
-      for (let i = 0; i < 3; i++) {
-        const balloon = document.createElement("div");
-        balloon.classList.add("balloon");
-        balloon.style.left = pos + Math.random() * 4 + "vw";
-        balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-        balloon.style.animationDuration = 6 + Math.random() * 3 + "s";
-        document.body.appendChild(balloon);
-        setTimeout(() => balloon.remove(), 9000);
-      }
-    });
-  }
-
   audio.addEventListener("ended", () => {
+    stopParticles();
     overlay.classList.add("show");
 
     setTimeout(() => {
       overlay.classList.remove("show");
       finalMessage.classList.add("show");
-
       launchConfetti();
-
-      setTimeout(() => {
-        launchBalloons();
-      }, 2500);
-
+      setTimeout(launchBalloons, 2500);
     }, 2000);
   });
 </script>
