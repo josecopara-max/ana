@@ -18,7 +18,6 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      transition: background 1.5s ease;
     }
 
     @keyframes backgroundMove {
@@ -31,6 +30,7 @@
       text-align: center;
       max-width: 700px;
       padding: 40px;
+      z-index: 2;
     }
 
     .line {
@@ -39,9 +39,7 @@
       font-size: 1.4rem;
       line-height: 1.6;
       transform: translateY(16px);
-      transition:
-        opacity 2s ease,
-        transform 2s ease;
+      transition: opacity 2s ease, transform 2s ease;
     }
 
     .line.show {
@@ -79,16 +77,34 @@
       color: #12081d;
     }
 
+    /* Overlay para oscurecer */
+    #fadeOverlay {
+      position: fixed;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+      z-index: 5;
+    }
+
+    #fadeOverlay.show {
+      opacity: 1;
+    }
+
+    /* Mensaje final */
     #finalMessage {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 2rem;
+      font-size: 2.2rem;
       text-align: center;
       color: #ffd700;
       opacity: 0;
       transition: opacity 2s ease;
+      z-index: 6;
+      pointer-events: none;
     }
 
     #finalMessage.show {
@@ -134,8 +150,13 @@
 
 </div>
 
+<!-- Overlay -->
+<div id="fadeOverlay"></div>
+
+<!-- Mensaje final -->
 <div id="finalMessage">
-  ¡Feliz cumpleaños mi amor! 💖<br>Te amo mucho
+  ¡Feliz cumpleaños mi amor! 💖<br>
+  Te amo mucho
 </div>
 
 <audio id="audio">
@@ -145,6 +166,7 @@
 <script>
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
+  const overlay = document.getElementById("fadeOverlay");
   const finalMessage = document.getElementById("finalMessage");
 
   const lyrics = [
@@ -153,7 +175,6 @@
     { id: "l3", show: 17, hide: 20 },
     { id: "l4", show: 21, hide: 25 },
     { id: "l5", show: 25, hide: 33 },
-
     { id: "l3", show: 33, hide: 37 },
     { id: "l4", show: 37, hide: 41 },
     { id: "l5", show: 42, hide: 49 }
@@ -179,14 +200,12 @@
     });
   });
 
-  // NUEVO: Evento al terminar la canción
+  // Al terminar la canción
   audio.addEventListener("ended", () => {
-    // Oscurecer fondo
-    document.body.style.background = "#000000";
+    overlay.classList.add("show");
 
-    // Mostrar mensaje después de 2 segundos
     setTimeout(() => {
-      document.body.style.background = "radial-gradient(circle at center, #2a083d, #0b0612 75%)";
+      overlay.classList.remove("show");
       finalMessage.classList.add("show");
     }, 2000);
   });
