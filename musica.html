@@ -104,7 +104,7 @@
     .particle {
       position: fixed;
       border-radius: 50%;
-      background: rgba(200, 160, 255, 0.8);
+      background: rgba(210, 180, 255, 0.95);
       opacity: 0;
       animation: floatParticle linear forwards;
       z-index: 1;
@@ -218,12 +218,12 @@
         : 78 + Math.random() * 10 + "vw";
 
       p.style.bottom = "-10px";
-      p.style.width = p.style.height = 4 + Math.random() * 4 + "px";
+      p.style.width = p.style.height = 6 + Math.random() * 5 + "px";
       p.style.animationDuration = 6 + Math.random() * 4 + "s";
 
       document.body.appendChild(p);
       setTimeout(() => p.remove(), 10000);
-    }, 350);
+    }, 180);
   }
 
   function stopParticles() {
