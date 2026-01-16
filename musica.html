@@ -18,6 +18,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      transition: background 1.5s ease;
     }
 
     @keyframes backgroundMove {
@@ -77,6 +78,22 @@
       background: #9f6bff;
       color: #12081d;
     }
+
+    #finalMessage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      text-align: center;
+      color: #ffd700;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    #finalMessage.show {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -117,6 +134,10 @@
 
 </div>
 
+<div id="finalMessage">
+  ¡Feliz cumpleaños mi amor! 💖<br>Te amo mucho
+</div>
+
 <audio id="audio">
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
@@ -124,6 +145,7 @@
 <script>
   const startBtn = document.getElementById("startBtn");
   const audio = document.getElementById("audio");
+  const finalMessage = document.getElementById("finalMessage");
 
   const lyrics = [
     { id: "l1", show: 0, hide: 7 },
@@ -155,6 +177,18 @@
         el.classList.add("fade");
       }, line.hide * 1000);
     });
+  });
+
+  // NUEVO: Evento al terminar la canción
+  audio.addEventListener("ended", () => {
+    // Oscurecer fondo
+    document.body.style.background = "#000000";
+
+    // Mostrar mensaje después de 2 segundos
+    setTimeout(() => {
+      document.body.style.background = "radial-gradient(circle at center, #2a083d, #0b0612 75%)";
+      finalMessage.classList.add("show");
+    }, 2000);
   });
 </script>
 
