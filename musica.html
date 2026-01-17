@@ -26,6 +26,24 @@
       100% { background-position: 50% 50%; }
     }
 
+    /* ===== FONDO ESTRELLADO FIJO ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 85% 25%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.35), transparent);
+      background-size: 140px 140px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .container {
       text-align: center;
       max-width: 700px;
@@ -70,6 +88,22 @@
       color: #12081d;
     }
 
+    /* ===== PARTÍCULAS LATERALES ===== */
+    .particle {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(210, 180, 255, 0.95);
+      opacity: 0;
+      animation: floatParticle linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(30px); opacity: 0; }
+      20% { opacity: 0.9; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+
     /* Overlay */
     #fadeOverlay {
       position: fixed;
@@ -99,22 +133,6 @@
     }
 
     #finalMessage.show { opacity: 1; }
-
-    /* ===== PARTÍCULAS LATERALES ===== */
-    .particle {
-      position: fixed;
-      border-radius: 50%;
-      background: rgba(210, 180, 255, 0.95);
-      opacity: 0;
-      animation: floatParticle linear forwards;
-      z-index: 1;
-    }
-
-    @keyframes floatParticle {
-      0%   { transform: translateY(30px); opacity: 0; }
-      20%  { opacity: 0.8; }
-      100% { transform: translateY(-120vh); opacity: 0; }
-    }
 
     /* ===== CONFETI ===== */
     .confetti {
@@ -223,7 +241,7 @@
 
       document.body.appendChild(p);
       setTimeout(() => p.remove(), 10000);
-    }, 120);
+    }, 180);
   }
 
   function stopParticles() {
@@ -267,16 +285,8 @@
 
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
-
-      setTimeout(() => {
-        el.classList.remove("fade");
-        el.classList.add("show");
-      }, line.show * 1000);
-
-      setTimeout(() => {
-        el.classList.remove("show");
-        el.classList.add("fade");
-      }, line.hide * 1000);
+      setTimeout(() => el.classList.add("show"), line.show * 1000);
+      setTimeout(() => el.classList.add("fade"), line.hide * 1000);
     });
   });
 
