@@ -285,8 +285,16 @@
 
     lyrics.forEach(line => {
       const el = document.getElementById(line.id);
-      setTimeout(() => el.classList.add("show"), line.show * 1000);
-      setTimeout(() => el.classList.add("fade"), line.hide * 1000);
+      setTimeout(() => {
+        el.classList.remove("fade");
+        el.classList.add("show");
+      }, line.show * 1000);
+      
+      setTimeout(() => {
+        el.classList.remove("show");
+        el.classList.add("fade");
+      }, line.hide * 1000);
+
     });
   });
 
